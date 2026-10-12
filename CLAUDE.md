@@ -15,20 +15,25 @@ Este repo es la base de configuración: cualquier sesión de Claude Code abierta
 Los wrappers de `scripts/mcp/` usan el Chromium preinstalado en headless cuando corren en la nube
 y el navegador normal en local. Versiones fijadas a propósito: subirlas a mano.
 
-## Plugins (`.claude/settings.json`)
+## Plugins oficiales (`.claude/settings.json`)
 
-- **superpowers** (oficial Anthropic): brainstorming, planes, TDD, debugging sistemático, subagentes.
-- **frontend-design** (oficial): interfaces con dirección estética, sin look genérico de IA.
-- **claude-code-setup** (oficial): analiza un repo y recomienda hooks, skills, MCP y subagentes.
-- **everything-claude-code** (fork de worldflowai): agentes planner/architect/code-reviewer/security-reviewer,
-  comandos `/plan`, `/tdd`, `/verify`, `/checkpoint`, `/learn`… y reglas de código.
-- **taste-skill** (Leonxlnx): estilos de diseño (minimalist, brutalist, soft, redesign, image-to-code…).
-- **task-observer** (rebelytics): observa las sesiones y propone mejoras a tus skills con revisión humana.
+- **frontend-design**: interfaces con dirección estética, sin look genérico de IA.
+- **claude-code-setup**: analiza un repo y recomienda hooks, skills, MCP y subagentes.
 
-## Skills locales (`.claude/skills/`)
+## Copiado en el repo (`.claude/`)
 
-Skills de Emil Kowalski (MIT): `animate`, `review-animations`, `improve-animations`,
-`emil-design-eng`, `apple-design`, `pick-ui-library`, `break-ui`, `prototype`, etc.
+Los plugins de terceros no se instalan solos en las sesiones en la nube, así que su contenido
+está copiado aquí (licencias en `third_party_licenses/`). Para actualizarlos, volver a copiar
+desde el repo original.
+
+- **Everything Claude Code** (worldflowai, fork de affaan-m): agentes en `.claude/agents/`,
+  comandos en `.claude/commands/`, reglas en `.claude/rules/`, skills de patrones/TDD/verificación.
+  Renombrados para no chocar con comandos de Claude Code: `/ecc-plan`, `/ecc-code-review`,
+  skill `ecc-security-review`. Sus hooks no se han copiado (usaban un formato que Claude Code no reconoce y bloqueaban la creación de .md).
+- **Superpowers** (obra): brainstorming, writing-plans, systematic-debugging, TDD, subagentes.
+- **Taste Skill** (Leonxlnx): taste-skill, minimalist, brutalist, soft, redesign, image-to-code, brandkit…
+- **Task Observer** (rebelytics): observa las sesiones y propone mejoras a las skills con revisión humana.
+- **Emil Kowalski**: `animate`, `review-animations`, `improve-animations`, `emil-design-eng`, `apple-design`…
 
 ## Excluido a propósito
 
