@@ -35,6 +35,16 @@ desde el repo original.
 - **Task Observer** (rebelytics): observa las sesiones y propone mejoras a las skills con revisión humana.
 - **Emil Kowalski**: `animate`, `review-animations`, `improve-animations`, `emil-design-eng`, `apple-design`…
 
+## gstack (Garry Tan, CEO de Y Combinator)
+
+No se copia en el repo: el hook `.claude/hooks/install-gstack.sh` lo instala en cada sesión en la nube
+(~30 s, versión fijada por commit) en `~/.claude/skills/gstack` y apunta su navegador al Chromium
+preinstalado. En local se instala una vez a mano:
+`git clone --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && ./setup`
+
+Flujo base: `/office-hours` (idea) → `/plan-ceo-review` + `/plan-eng-review` (o `/autoplan`) →
+construir → `/review` → `/qa <url>` → `/ship`. Otros: `/investigate`, `/design-review`, `/cso`, `/retro`.
+
 ## Excluido a propósito
 
 - **OmniRoute**: proxy que redirige el tráfico de Claude Code a otros proveedores. Requiere un
