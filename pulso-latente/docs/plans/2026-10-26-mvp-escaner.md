@@ -160,5 +160,5 @@ Corregido a partir de `code-reviewer` y `security-reviewer`: falsos positivos de
 
 ## Pendiente de decisión de Lili
 
-- Fotografía o marca gráfica propia: la web usa Geist y ninguna imagen.
+- Fotografía: la web usa marca gráfica propia (ver `docs/marca.md`) y ninguna imagen.
 - Next 16 resolvería el aviso de `postcss` de `npm audit` (no explotable aquí, solo build); exige subir también TypeScript.

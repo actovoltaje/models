@@ -18,21 +18,21 @@ export async function GET(req: Request): Promise<Response> {
   const circ = 2 * Math.PI * 120;
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Pulso Latente de ${esc(brand)}: ${score} sobre 100">
-<rect width="1200" height="630" fill="#eef1f3"/>
+<rect width="1200" height="630" fill="#ffb700"/>
 <g transform="translate(250 315)">
-<circle r="120" fill="none" stroke="#d3d9de" stroke-width="22"/>
-<circle r="120" fill="none" stroke="#2a3fd1" stroke-width="22" stroke-linecap="round" stroke-dasharray="${((score / 100) * circ).toFixed(1)} ${circ.toFixed(1)}" transform="rotate(-90)"/>
-<text y="32" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="96" fill="#101418">${score}</text>
+<circle r="120" fill="none" stroke="#093160" stroke-opacity=".18" stroke-width="24"/>
+<circle r="120" fill="none" stroke="#093160" stroke-width="24" stroke-linecap="round" stroke-dasharray="${((score / 100) * circ).toFixed(1)} ${circ.toFixed(1)}" transform="rotate(-90)"/>
+<text y="30" text-anchor="middle" font-family="'Space Mono', ui-monospace, monospace" font-weight="700" font-size="88" letter-spacing="-5" fill="#093160">${score}</text>
 </g>
-<g font-family="system-ui, sans-serif" fill="#101418">
-<g transform="translate(470 168) scale(.6)" fill="none" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
-<path d="M12 88 L12 50 A38 38 0 0 1 50 12 A38 38 0 0 1 88 50 A38 38 0 0 1 50 88 Z" stroke="#101418"/>
-<path d="M26 52 L38 52 L44 35 L54 69 L60 52 L74 52" stroke="#2a3fd1"/>
+<g font-family="'Maven Pro', system-ui, sans-serif" fill="#093160">
+<g transform="translate(470 168) scale(.6)" fill="none" stroke="#093160" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+<path d="M12 88 L12 50 A38 38 0 0 1 50 12 A38 38 0 0 1 88 50 A38 38 0 0 1 50 88 Z"/>
+<path d="M26 52 L38 52 L44 35 L54 69 L60 52 L74 52"/>
 </g>
-<text x="545" y="212" font-size="26" fill="#5a6470" letter-spacing="4">PULSO LATENTE</text>
-<text x="470" y="330" font-size="56" font-weight="600">${esc(brand)}</text>
-<text x="470" y="395" font-size="32" fill="#5a6470">${esc(bandFor(score))} en buscadores de IA</text>
-<text x="470" y="520" font-size="26" fill="#5a6470">Mide el tuyo gratis. Latente, de Acto Voltaje.</text>
+<text x="545" y="212" font-size="26" font-weight="700" letter-spacing="4">PULSO LATENTE</text>
+<text x="470" y="330" font-size="58" font-weight="700">${esc(brand)}</text>
+<text x="470" y="395" font-size="32">${esc(bandFor(score))} en buscadores de IA</text>
+<text x="470" y="520" font-size="26">Mide el tuyo gratis. Latente, de Acto Voltaje.</text>
 </g>
 </svg>`;
   return new Response(svg, {

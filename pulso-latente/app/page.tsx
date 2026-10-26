@@ -11,6 +11,7 @@ export default function Page() {
         <a href="#planes">Planes</a>
       </header>
       <main>
+        <div className="hero-band">
         <section className="hero">
           <div className="hero-text">
             <p className="eyebrow">{copy.hero.eyebrow}</p>
@@ -22,6 +23,7 @@ export default function Page() {
           </div>
           <Scanner />
         </section>
+        </div>
 
         <section className="section" aria-labelledby="como-h">
           <h2 id="como-h">Cómo funciona</h2>

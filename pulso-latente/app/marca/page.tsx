@@ -42,8 +42,9 @@ export default function Marca() {
         </div>
         <ul className="brand-meaning">
           <li><strong>La burbuja</strong> es la conversación: alguien pregunta y te mencionan o no. Su esquina cuadrada es la «L» de Latente.</li>
-          <li><strong>El latido</strong> es el Pulso: lo que medimos, siempre en cobalto, siempre vivo.</li>
+          <li><strong>El latido</strong> es el Pulso: lo que medimos, siempre en navy sobre el ámbar.</li>
           <li><strong>El nombre</strong> ya lo dice: «late» es «él late». El latido también sube por la barra de la primera «t».</li>
+          <li><strong>El ámbar</strong> viene de Acto Voltaje y es el color de «donde te encuentran», como las páginas amarillas de toda la vida pero para la IA.</li>
         </ul>
       </section>
 
@@ -54,8 +55,8 @@ export default function Marca() {
             <rect x="0" y="0" width="100" height="100" fill="none" stroke="var(--rule)" strokeDasharray="2 2" />
             <circle cx="50" cy="50" r="38" fill="none" stroke="var(--rule)" strokeDasharray="2 2" />
             <line x1="0" y1="52" x2="100" y2="52" stroke="var(--rule)" strokeDasharray="2 2" />
-            <path d={BUBBLE} fill="none" stroke="var(--ink)" strokeWidth="8" strokeLinejoin="round" strokeLinecap="round" />
-            <path d={PULSE} fill="none" stroke="var(--accent)" strokeWidth="8" strokeLinejoin="round" strokeLinecap="round" />
+            <path d={BUBBLE} fill="#ffb700" stroke="#093160" strokeWidth="8" strokeLinejoin="round" strokeLinecap="round" />
+            <path d={PULSE} fill="none" stroke="#093160" strokeWidth="8" strokeLinejoin="round" strokeLinecap="round" />
           </g>
           <g fontSize="11" fill="var(--muted)">
             <text x="424" y="150">línea del latido</text>
@@ -66,14 +67,15 @@ export default function Marca() {
             <text x="4" y="250">cuadrada, abajo a la izquierda</text>
           </g>
         </svg>
-        <p className="muted">Trazo de 8 con extremos y uniones redondeados: amable, de rotulista, no de ingeniería.</p>
+        <p className="muted">Trazo de 8 con extremos y uniones redondeados: amable, de rotulista, no de ingeniería. La burbuja va rellena de ámbar.</p>
       </section>
 
       <section className="brand-sec">
         <h2>Versiones</h2>
         <div className="variants">
           <figure className="v v-light"><Lockup height={52} title="Logotipo" /><figcaption>A color, sobre claro</figcaption></figure>
-          <figure className="v v-dark" data-theme="dark"><Lockup height={52} title="Logotipo" /><figcaption>Sobre oscuro</figcaption></figure>
+          <figure className="v v-dark"><Lockup height={52} title="Logotipo" /><figcaption>Sobre navy</figcaption></figure>
+          <figure className="v v-amber"><Lockup height={52} title="Logotipo" /><figcaption>Sobre ámbar</figcaption></figure>
           <figure className="v v-mono"><img src="/brand/latente-mark-mono.svg" alt="" height={64} /><figcaption>Una tinta, para sellos y fax</figcaption></figure>
           <figure className="v v-app"><img src="/brand/latente-app-icon.svg" alt="" height={72} /><figcaption>Icono de aplicación</figcaption></figure>
         </div>
@@ -83,14 +85,15 @@ export default function Marca() {
       <section className="brand-sec">
         <h2>Color y tipografía</h2>
         <div className="swatches">
-          <div style={{ background: "#eef1f3", color: "#101418" }}><b>Papel</b><span>#EEF1F3</span><small>Fondo, 60 %</small></div>
-          <div style={{ background: "#101418", color: "#eef1f3" }}><b>Tinta</b><span>#101418</span><small>Texto y contorno, 30 %</small></div>
-          <div style={{ background: "#2a3fd1", color: "#fff" }}><b>Cobalto</b><span>#2A3FD1</span><small>El latido y los botones, 10 %</small></div>
-          <div style={{ background: "#8c9dff", color: "#101418" }}><b>Cobalto claro</b><span>#8C9DFF</span><small>El mismo latido en modo oscuro</small></div>
+          <div style={{ background: "#ffb700", color: "#093160" }}><b>Ámbar</b><span>#FFB700</span><small>La burbuja y la banda de inicio. Donde te encuentran.</small></div>
+          <div style={{ background: "#093160", color: "#fff" }}><b>Navy</b><span>#093160</span><small>Texto, contorno y botones</small></div>
+          <div style={{ background: "#0f92b2", color: "#fff" }}><b>Cian</b><span>#0F92B2</span><small>Solo apoyo: foco del teclado y enlaces</small></div>
+          <div style={{ background: "#f4f7fa", color: "#093160" }}><b>Papel</b><span>#F4F7FA</span><small>Fondo de la web</small></div>
         </div>
         <div className="type">
-          <p className="type-big">Geist 600</p>
-          <p className="muted-lg">Para titulares y números, con el espaciado algo cerrado. Cuerpo en Geist 400. Nada de serif: queremos parecer una herramienta de confianza, no un periódico.</p>
+          <p className="type-big">Maven Pro</p>
+          <p className="type-mono">Space Mono 72/100</p>
+          <p className="muted-lg">Las dos tipografías de Acto Voltaje. Maven Pro, redondeada y cercana, para titulares y texto; Space Mono para los números (la nota, los precios), que dan la sensación de aparato de medir.</p>
         </div>
       </section>
 
