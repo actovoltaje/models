@@ -43,13 +43,31 @@ function containsWord(haystack: string, needle: string): boolean {
   return re.test(haystack);
 }
 
+const compact = (s: string): string => fold(s).replace(/[^a-z0-9]/g, "");
+
+/** True si palabras consecutivas del bloque, unidas, forman exactamente el alias («clinica sol» = «clinicasol»). */
+function matchesAlias(block: string, alias: string): boolean {
+  const target = compact(alias);
+  if (!target) return false;
+  const words = block.split(/[^a-z0-9]+/).filter(Boolean);
+  for (let i = 0; i < words.length; i += 1) {
+    let acc = "";
+    for (let j = i; j < words.length && acc.length < target.length; j += 1) {
+      acc += words[j];
+      if (acc === target) return true;
+    }
+  }
+  return false;
+}
+
 /** Índices (0 = primera) de los bloques no vacíos del texto donde aparece la marca o su dominio. */
 export function findMentions(text: string, aliases: readonly string[], domain: string): number[] {
   const blocks = text.split(/\n+/).map(fold).filter((b) => b.trim().length > 0);
-  const needles = [...aliases.map(fold), fold(domain)];
   const hits: number[] = [];
   blocks.forEach((block, index) => {
-    if (needles.some((n) => n.length > 0 && containsWord(block, n))) hits.push(index);
+    const byAlias = aliases.some((a) => matchesAlias(block, a));
+    const byDomain = domain.length > 0 && containsWord(block, fold(domain));
+    if (byAlias || byDomain) hits.push(index);
   });
   return hits;
 }
