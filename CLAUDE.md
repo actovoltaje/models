@@ -19,6 +19,7 @@ y el navegador normal en local. Versiones fijadas a propósito: subirlas a mano.
 
 - **frontend-design**: interfaces con dirección estética, sin look genérico de IA.
 - **claude-code-setup**: analiza un repo y recomienda hooks, skills, MCP y subagentes.
+- **oh-my-claudecode** (Yeachan Heo, marketplace `omc`): orquestación multiagente (`/autopilot`, `/ralph`, `/team`, `/plan`, `/deep-interview`…). Se instala desde GitHub vía `.claude/settings.json`, no está copiado. Tras la primera carga, ejecutar `/omc-setup`. Añade hooks propios (SessionStart, Stop, etc.): si interfiere, desactivarlo en `enabledPlugins`.
 
 ## Copiado en el repo (`.claude/`)
 
