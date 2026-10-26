@@ -42,3 +42,9 @@ describe("detectTone", () => {
     expect(detectTone("Pulso está en Granada.", ["pulso"])).toBe("neutral");
   });
 });
+
+describe("detectTone con marcas parecidas", () => {
+  it("no atribuye a la marca el tono de una frase sobre «Impulso»", () => {
+    expect(detectTone("Pulso Estudio destaca. Impulso Beauty tiene malas reseñas.", ["pulso"])).toBe("positive");
+  });
+});

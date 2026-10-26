@@ -25,9 +25,8 @@ export default function Page() {
         <section className="section" aria-labelledby="como-h">
           <h2 id="como-h">Cómo funciona</h2>
           <ol className="steps">
-            {copy.steps.map((s, i) => (
+            {copy.steps.map((s) => (
               <li key={s.title}>
-                <span className="step-n">{i + 1}</span>
                 <h3>{s.title}</h3>
                 <p>{s.body}</p>
               </li>

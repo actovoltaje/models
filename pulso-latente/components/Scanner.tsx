@@ -10,11 +10,13 @@ type State =
   | { kind: "error"; message: string }
   | { kind: "done"; data: ScanView };
 
-const MESSAGE: Record<number, string> = {
-  400: copy.errors.invalid,
-  429: copy.errors.rate,
-  502: copy.errors.engines,
-};
+function messageFor(status: number, code: string | undefined): string {
+  if (status === 400) return code === "own_domain_required" ? copy.errors.ownDomain : copy.errors.invalid;
+  if (status === 429) return copy.errors.rate;
+  if (status === 502) return copy.errors.engines;
+  if (status === 503) return code === "capacity" ? copy.errors.capacity : copy.errors.generic;
+  return copy.errors.generic;
+}
 
 export function Scanner() {
   const [state, setState] = useState<State>({ kind: "idle" });
@@ -30,7 +32,8 @@ export function Scanner() {
         body: JSON.stringify({ url: f.get("url"), sector: f.get("sector"), city: f.get("city") }),
       });
       if (!res.ok) {
-        setState({ kind: "error", message: MESSAGE[res.status] ?? copy.errors.generic });
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
+        setState({ kind: "error", message: messageFor(res.status, body.error) });
         return;
       }
       setState({ kind: "done", data: (await res.json()) as ScanView });
@@ -58,7 +61,12 @@ export function Scanner() {
         </label>
         <button type="submit" disabled={busy}>{busy ? "Midiendo…" : copy.form.submit}</button>
       </form>
-      {busy && <p className="muted" role="status">{copy.form.loading}</p>}
+      {busy && (
+        <div className="loading" role="status">
+          <svg viewBox="0 0 72 24" aria-hidden="true"><path d="M0 13 H24 L28 13 L32 4 L38 22 L43 8 L46 13 H72" /></svg>
+          <p className="muted">{copy.form.loading}</p>
+        </div>
+      )}
       {state.kind === "error" && <p className="field-error" role="alert">{state.message}</p>}
       {state.kind === "done" && <Result data={state.data} />}
     </div>

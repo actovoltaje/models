@@ -14,7 +14,7 @@ export interface EngineAnswer {
 
 export interface Engine {
   readonly id: EngineId;
-  ask(question: string): Promise<EngineAnswer>;
+  ask(question: string, signal?: AbortSignal): Promise<EngineAnswer>;
 }
 
 export interface ScanInput {
@@ -32,6 +32,8 @@ export interface QuestionResult {
   readonly question: string;
   readonly score: number;
   readonly mentioned: boolean;
+  /** Respuestas válidas recibidas; 0 distingue «no pudimos preguntar» de «no te mencionan». */
+  readonly answered: number;
 }
 
 export interface ScanResult {

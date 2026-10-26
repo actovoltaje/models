@@ -8,6 +8,7 @@ export interface ScanView {
   readonly margin: number;
   readonly domain: string;
   readonly scanId: string;
+  readonly cardUrl: string;
   readonly simulated: boolean;
   readonly partial: boolean;
   readonly enginesOk: readonly string[];
@@ -19,18 +20,19 @@ export interface ScanView {
 const ENGINE_LABEL: Record<string, string> = { chatgpt: "ChatGPT", gemini: "Gemini", perplexity: "Perplexity" };
 const RING = 2 * Math.PI * 54;
 
-function LeadForm({ scanId }: { scanId: string }) {
+function LeadGate({ scanId }: { scanId: string }) {
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const email = String(new FormData(e.currentTarget).get("email") ?? "");
+    const form = new FormData(e.currentTarget);
+    const email = String(form.get("email") ?? "");
     setState("sending");
     try {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email, scanId }),
+        body: JSON.stringify({ email, scanId, consent: form.get("consent") === "on" }),
       });
       setState(res.status === 204 ? "done" : "error");
     } catch {
@@ -38,21 +40,33 @@ function LeadForm({ scanId }: { scanId: string }) {
     }
   }
 
-  if (state === "done") return <p className="lead-done" role="status">{copy.result.leadDone}</p>;
   return (
-    <form className="lead" onSubmit={onSubmit}>
-      <label htmlFor="lead-email" className="sr-only">Email</label>
-      <input id="lead-email" name="email" type="email" required autoComplete="email" placeholder="tu@email.com" />
-      <button type="submit" disabled={state === "sending"}>{copy.result.leadSubmit}</button>
-      {state === "error" && <p className="field-error" role="alert">No hemos podido guardarlo. Revisa el email o inténtalo más tarde.</p>}
-    </form>
+    <>
+      <h4>{copy.result.leadTitle}</h4>
+      {state === "done" ? (
+        <p className="lead-done" role="status">{copy.result.leadDone}</p>
+      ) : (
+        <>
+          <p className="muted">{copy.result.leadBody}</p>
+          <form className="lead-row" onSubmit={onSubmit}>
+            <label htmlFor="lead-email" className="sr-only">Email</label>
+            <input id="lead-email" name="email" type="email" required autoComplete="email" placeholder="tu@email.com" />
+            <button type="submit" disabled={state === "sending"}>{copy.result.leadSubmit}</button>
+            <label className="consent">
+              <input name="consent" type="checkbox" required />
+              <span>{copy.result.consent}</span>
+            </label>
+            {state === "error" && <p className="field-error" role="alert">No hemos podido guardarlo. Revisa el email o inténtalo más tarde.</p>}
+          </form>
+        </>
+      )}
+    </>
   );
 }
 
 export function Result({ data }: { data: ScanView }) {
   const dash = (data.score / 100) * RING;
-  const cardHref = `/api/card?score=${data.score}&brand=${encodeURIComponent(data.domain)}`;
-
+  
   return (
     <section className="result" aria-live="polite" aria-label="Resultado del escaneo">
       <div className="score-row">
@@ -64,9 +78,11 @@ export function Result({ data }: { data: ScanView }) {
           <span className="ring-num">{data.score}</span>
         </div>
         <div>
-          <p className="eyebrow">{copy.index} · {data.domain}</p>
+          <p className="eyebrow">{copy.index}</p>
+          <p className="domain">{data.domain}</p>
           <h3 className="band">{bandFor(data.score)}</h3>
-          <p className="muted">± {data.margin} puntos · {data.enginesOk.map((e) => ENGINE_LABEL[e] ?? e).join(", ")}</p>
+          <p className="muted">± {data.margin} puntos</p>
+          <p className="muted">{data.enginesOk.map((e) => ENGINE_LABEL[e] ?? e).join(", ")}</p>
         </div>
       </div>
 
@@ -74,10 +90,16 @@ export function Result({ data }: { data: ScanView }) {
       {data.partial && <p className="notice">{copy.result.partial}</p>}
 
       <div className="strip" aria-label="Aparición por pregunta">
-        {data.perQuestion.map((q) => (
-          <span key={q.question} className={q.mentioned ? "tick on" : "tick"} style={{ height: `${12 + q.score * 0.36}px` }} title={q.question} />
+        {data.perQuestion.map((q, i) => (
+          <span
+            key={q.question}
+            className={q.mentioned ? "tick on" : "tick"}
+            style={{ height: `${12 + q.score * 0.36}px`, ["--i" as string]: i }}
+            title={q.question}
+          />
         ))}
       </div>
+      <p className="strip-caption">Cada barra es una pregunta de comprador; destacadas, aquellas donde te mencionan en la mayoría de respuestas.</p>
 
       <div className="cols">
         <div>
@@ -87,7 +109,7 @@ export function Result({ data }: { data: ScanView }) {
           ) : (
             <ol className="list">
               {data.competitors.map((c) => (
-                <li key={c.name}>{c.name} <span className="muted">· {c.mentions} menciones</span></li>
+                <li key={c.name}>{c.name} <span className="muted">({c.mentions} menciones)</span></li>
               ))}
             </ol>
           )}
@@ -101,10 +123,8 @@ export function Result({ data }: { data: ScanView }) {
       </div>
 
       <div className="gate">
-        <h4>{copy.result.leadTitle}</h4>
-        <p className="muted">{copy.result.leadBody}</p>
-        <LeadForm scanId={data.scanId} />
-        <a className="link" href={cardHref} download={`pulso-${data.domain}.svg`}>{copy.result.card}</a>
+        <LeadGate scanId={data.scanId} />
+        <a className="link" href={data.cardUrl} download={`pulso-${data.domain}.svg`}>{copy.result.card}</a>
       </div>
 
       <p className="caveat">{copy.result.caveat}</p>

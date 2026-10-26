@@ -1,4 +1,4 @@
-import { fold } from "./brand";
+import { findMentions, fold } from "./brand";
 import type { Analysis, Tone } from "./types";
 
 /** Hipótesis de partida: se validan con los primeros 20 escaneos reales. */
@@ -25,11 +25,8 @@ const NEGATIVE = ["no lo recomiendo", "no recomiendo", "malas resenas", "mala fa
 const POSITIVE = ["excelente", "recomendable", "recomiendo", "destaca", "referente", "lider", "buenas resenas", "muy valorad", "mejor"];
 
 export function detectTone(text: string, aliases: readonly string[]): Tone {
-  const names = aliases.map((a) => fold(a).replace(/[^a-z0-9]/g, ""));
-  const sentences = fold(text)
-    .split(/[.!?\n]+/)
-    .filter((s) => names.some((n) => n.length > 0 && s.replace(/[^a-z0-9]/g, "").includes(n)));
-  const scope = sentences.join(" . ");
+  const sentences = text.split(/[.!?\n]+/).filter((s) => findMentions(s, aliases, "").length > 0);
+  const scope = fold(sentences.join(" . "));
   if (!scope) return "neutral";
   if (NEGATIVE.some((w) => scope.includes(w))) return "negative";
   if (POSITIVE.some((w) => scope.includes(w))) return "positive";

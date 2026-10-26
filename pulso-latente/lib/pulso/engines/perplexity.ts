@@ -9,11 +9,12 @@ const Body = z.object({
 export function createPerplexityEngine(apiKey: string, model = "sonar"): Engine {
   return {
     id: "perplexity",
-    async ask(question) {
+    async ask(question, signal) {
       const res = await fetch("https://api.perplexity.ai/chat/completions", {
         method: "POST",
         headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({ model, messages: [{ role: "user", content: question }] }),
+        signal,
       });
       if (!res.ok) throw new Error(`perplexity ${res.status}`);
       const body = Body.parse(await res.json());

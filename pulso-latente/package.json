@@ -12,6 +12,7 @@
     "test:cov": "vitest run --coverage"
   },
   "dependencies": {
+    "geist": "^1.8.2",
     "next": "^15.5.28",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

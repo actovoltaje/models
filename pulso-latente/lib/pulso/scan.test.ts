@@ -5,7 +5,7 @@ import type { Engine, EngineId, ScanInput } from "./types";
 
 const input: ScanInput = { domain: "clinicasol.es", sector: "clínica de fisioterapia", city: "Granada" };
 
-const fake = (id: EngineId, text: string): Engine => ({ id, ask: async () => ({ text, sources: ["https://clinicasol.es/x"] }) });
+const fake = (id: EngineId, text: string): Engine => ({ id, ask: async () => ({ text, sources: [] }) });
 const failing = (id: EngineId): Engine => ({ id, ask: async () => { throw new Error("boom sk-secret"); } });
 
 const LIST_FIRST = "1. **Clínica Sol** - excelente y muy recomendable\n2. Fisio Norte\n3. Fisio Norte Plus";
@@ -69,10 +69,49 @@ describe("runScan", () => {
     expect(peak).toBeLessThanOrEqual(6);
   });
 
-  it("respuesta vacía cuenta como no mencionado, no como fallo", async () => {
-    const r = await runScan(input, [fake("chatgpt", "")], 1);
+  it("una respuesta vacía es un fallo del motor, no un cero", async () => {
+    const r = await runScan(input, [fake("chatgpt", LIST_FIRST), fake("gemini", "")], 1);
+    expect(r.enginesFailed).toEqual(["gemini"]);
+    expect(r.partial).toBe(true);
+    expect(r.score).toBe(100);
+  });
+
+  it("marca partial si fallan muchas llamadas sueltas aunque el motor responda", async () => {
+    let n = 0;
+    const flaky: Engine = { id: "chatgpt", ask: async () => { n += 1; if (n % 2 === 0) throw new Error("x"); return { text: LIST_FIRST, sources: [] }; } };
+    const r = await runScan(input, [flaky], 2);
+    expect(r.enginesOk).toEqual(["chatgpt"]);
+    expect(r.partial).toBe(true);
+  });
+
+  it("deja de encolar trabajo al agotar el presupuesto total y devuelve parcial", async () => {
+    const slow: Engine = { id: "gemini", ask: () => new Promise((r) => setTimeout(() => r({ text: LIST_FIRST, sources: [] }), 30)) };
+    const r = await runScan(input, [fake("chatgpt", LIST_FIRST), slow], 2, { concurrency: 2, budgetMs: 50 });
+    expect(r.partial).toBe(true);
+  });
+
+  it("una fuente que cita tu dominio cuenta como mención", async () => {
+    const r = await runScan(input, [{ id: "perplexity", ask: async () => ({ text: "1. Fisio Norte [1]", sources: ["https://blog.clinicasol.es/x"] }) }], 1);
+    expect(r.score).toBeGreaterThan(0);
+  });
+
+  it("no usa etiquetas de campos como competidores", async () => {
+    const text = "1. **Fisio Norte**\n   - Dirección: calle\n   - Valoración: 4,8\n2. Centro Alfa\n   - Dirección: otra\n   - Valoración: 4,1";
+    const r = await runScan(input, [fake("chatgpt", text)], 1);
+    expect(r.competitors.map((c) => c.name)).toEqual(["Fisio Norte", "Centro Alfa"]);
+  });
+
+  it("no cuenta como mención un alias formado solo por sector y ciudad", async () => {
+    const generic: ScanInput = { domain: "fisioterapiagranada.es", sector: "fisioterapia", city: "Granada" };
+    const r = await runScan(generic, [fake("chatgpt", "1. Fisioterapia Granada Centro\n2. Otro")], 1);
     expect(r.score).toBe(0);
-    expect(r.enginesFailed).toEqual([]);
+  });
+
+  it("pasa una señal de cancelación al motor al vencer el timeout", async () => {
+    let aborted = false;
+    const hung: Engine = { id: "perplexity", ask: (_q, signal) => new Promise(() => { signal?.addEventListener("abort", () => { aborted = true; }); }) };
+    await runScan(input, [fake("chatgpt", LIST_FIRST), hung], 1, { timeoutMs: 20 });
+    expect(aborted).toBe(true);
   });
 });
 
@@ -84,5 +123,20 @@ describe("motor simulado", () => {
   });
   it("sin claves getEngines devuelve los 3 motores simulados", () => {
     expect(getEngines({}, "Clínica Sol").map((e) => e.id)).toEqual(["chatgpt", "gemini", "perplexity"]);
+  });
+});
+
+describe("perQuestion", () => {
+  it("solo marca como mencionada la pregunta si la marca sale en la mitad o más de las respuestas", async () => {
+    let calls = 0;
+    const alternating: Engine = {
+      id: "chatgpt",
+      ask: async () => {
+        calls += 1;
+        return { text: calls % 4 === 1 ? "1. Clínica Sol" : "1. Fisio Norte", sources: [] };
+      },
+    };
+    const r = await runScan(input, [alternating], 2, { concurrency: 1 });
+    expect(r.perQuestion.filter((q) => q.mentioned).length).toBeLessThan(10);
   });
 });

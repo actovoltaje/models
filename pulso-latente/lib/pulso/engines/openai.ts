@@ -19,11 +19,12 @@ const Body = z.object({
 export function createOpenAIEngine(apiKey: string, model = "gpt-4o-mini"): Engine {
   return {
     id: "chatgpt",
-    async ask(question) {
+    async ask(question, signal) {
       const res = await fetch("https://api.openai.com/v1/responses", {
         method: "POST",
         headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
         body: JSON.stringify({ model, tools: [{ type: "web_search" }], input: question }),
+        signal,
       });
       if (!res.ok) throw new Error(`openai ${res.status}`);
       const parsed = Body.parse(await res.json());

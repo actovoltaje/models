@@ -1,7 +1,12 @@
+/** Versión del texto de consentimiento que ve la persona (ver lib/copy.ts). */
+export const CONSENT_VERSION = "2026-10-v1";
+
 export interface Lead {
   readonly email: string;
   readonly scanId: string;
   readonly createdAt: string;
+  readonly consentAt: string;
+  readonly consentVersion: string;
 }
 
 export interface LeadStore {

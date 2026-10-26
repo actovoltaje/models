@@ -139,3 +139,26 @@
 - [ ] **Emil Kowalski:** `emil-design-eng` y `review-animations` sobre la interfaz; aplicar los arreglos.
 - [ ] **Taste Skill:** `taste-skill` valida que el diseño encaja con la marca (sobrio, español, confianza) y no parece plantilla de IA.
 - [ ] `verification-before-completion`: tests, typecheck y build en verde antes de dar nada por hecho.
+
+---
+
+## Estado tras las revisiones (ECC, Emil Kowalski, Taste Skill)
+
+Hecho: tareas 1 a 8. 82 tests (cobertura de líneas 91 % en `lib/` y API), typecheck y build en verde; flujo probado en navegador (escritorio, móvil y modo oscuro) sin errores de consola.
+
+Corregido a partir de `code-reviewer` y `security-reviewer`: falsos positivos de marca entre frases, dominios con tilde o ñ, redes sociales como «marca», posición por puesto de lista y no por línea, competidores que eran etiquetas de campos, respuesta vacía como fallo, cancelación real de llamadas con presupuesto total de 45 s, fuentes que citan tu web, firma HMAC de la tarjeta, comprobación de `Content-Type`/`Origin`, validación de texto libre, consentimiento RGPD, cabeceras de seguridad, límites por IP (IPv6 por /64), por dominio y tope diario global.
+
+## Antes de abrir al público (bloqueante)
+
+- [ ] Límites de gasto duros en los paneles de OpenAI, Google AI y Perplexity.
+- [ ] Anti-bot (Cloudflare Turnstile o Vercel BotID) verificado en servidor antes de `runScan`.
+- [ ] Limitador compartido (Upstash/Vercel KV o Supabase): hoy es en memoria por instancia, y el tope diario también.
+- [ ] Persistir los leads (hoy se pierden al reiniciar) y redactar la política de privacidad que enlaza el consentimiento.
+- [ ] Fijar `CARD_SECRET`, `MAX_SCANS_PER_DAY` y las tres claves en Vercel; confirmar que Vercel reescribe `x-forwarded-for`.
+- [ ] Validar los adaptadores reales (OpenAI Responses con `web_search`, Gemini con `google_search`, Perplexity `sonar`) con una clave de prueba: están escritos contra la documentación pero no se han probado en vivo.
+- [ ] Revisar los 20 primeros escaneos reales para fijar `WEIGHTS`, precios y coste por llamada.
+
+## Pendiente de decisión de Lili
+
+- Fotografía o marca gráfica propia: la web usa Geist y ninguna imagen.
+- Next 16 resolvería el aviso de `postcss` de `npm audit` (no explotable aquí, solo build); exige subir también TypeScript.

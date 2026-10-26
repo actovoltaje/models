@@ -28,3 +28,22 @@ describe("clientIp", () => {
     expect(clientIp(new Request("http://x"))).toBe("unknown");
   });
 });
+
+describe("clientIp IPv6 y x-real-ip", () => {
+  it("agrupa IPv6 por /64", () => {
+    const a = clientIp(new Request("http://x", { headers: { "x-forwarded-for": "2a01:4f8:1:2:aaaa:bbbb:cccc:dddd" } }));
+    const b = clientIp(new Request("http://x", { headers: { "x-forwarded-for": "2a01:4f8:1:2:1111:2222:3333:4444" } }));
+    expect(a).toBe(b);
+  });
+  it("usa x-real-ip si no hay x-forwarded-for", () => {
+    expect(clientIp(new Request("http://x", { headers: { "x-real-ip": "7.7.7.7" } }))).toBe("7.7.7.7");
+  });
+});
+
+describe("createLimiter memoria", () => {
+  it("no crece más allá de maxKeys", () => {
+    const l = createLimiter({ max: 1, windowMs: 1000, maxKeys: 3 });
+    ["a", "b", "c", "d", "e"].forEach((k) => l.hit(k));
+    expect(l.size()).toBeLessThanOrEqual(3);
+  });
+});
