@@ -28,7 +28,11 @@ export async function POST(req: Request): Promise<Response> {
 
   if (!perIp.hit(clientIp(req))) return json(429, { error: "rate_limited" });
 
-  const env = process.env;
+  const env = {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    PERPLEXITY_API_KEY: process.env.PERPLEXITY_API_KEY,
+  };
   const label = domain.split(".")[0] ?? domain;
   try {
     const result = await runScan(

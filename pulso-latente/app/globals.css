@@ -1,0 +1,98 @@
+:root {
+  --paper: #f4efe6;
+  --surface: #fbf8f2;
+  --ink: #15130f;
+  --muted: #6b6457;
+  --rule: #d9d1c2;
+  --accent: #c8321e;
+  --accent-ink: #fff;
+  --display: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --gutter: 16px;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 var(--ui); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; line-height: 1.12; margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+a { color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.top { display: flex; justify-content: space-between; align-items: center; padding: 18px var(--gutter); max-width: 1120px; margin: 0 auto; }
+.logo { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.top a { font-size: 14px; color: var(--muted); text-decoration: none; }
+.top a:hover { color: var(--ink); }
+
+.hero { display: grid; gap: 32px; padding: 24px var(--gutter) 56px; max-width: 1120px; margin: 0 auto; }
+.eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+h1 { font-size: clamp(34px, 7vw, 60px); letter-spacing: -0.02em; }
+.lead { margin-top: 18px; font-size: 18px; color: var(--muted); max-width: 46ch; }
+.pulse { width: 200px; height: 34px; margin-top: 26px; }
+.pulse path { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 1.6s cubic-bezier(0.23, 1, 0.32, 1) 0.2s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+.scanner { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; padding: 20px; align-self: start; }
+.scanner form { display: grid; gap: 14px; }
+.scanner label { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+input { font: inherit; font-size: 16px; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 11px 12px; width: 100%; }
+input:focus { border-color: var(--ink); }
+input:disabled { opacity: 0.6; }
+button { font: inherit; font-weight: 600; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; padding: 12px 18px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), opacity 160ms; }
+button:active:not(:disabled) { transform: scale(0.97); }
+button:disabled { opacity: 0.6; cursor: progress; }
+.muted { color: var(--muted); font-size: 14px; }
+.scanner > .muted, .scanner > .field-error { margin-top: 14px; }
+.field-error { color: var(--accent); font-size: 14px; }
+.notice { margin-top: 14px; font-size: 13px; background: var(--paper); border-left: 3px solid var(--accent); padding: 8px 10px; }
+
+.result { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--rule); display: grid; gap: 20px; animation: rise 320ms cubic-bezier(0.23, 1, 0.32, 1); }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+.score-row { display: flex; gap: 18px; align-items: center; }
+.ring { position: relative; width: 108px; height: 108px; flex: none; }
+.ring svg { width: 100%; height: 100%; }
+.ring-track { fill: none; stroke: var(--rule); stroke-width: 9; }
+.ring-fill { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; }
+.ring-num { position: absolute; inset: 0; display: grid; place-items: center; font: 600 34px var(--display); }
+.band { font-size: 24px; }
+.score-row .eyebrow { margin-bottom: 6px; }
+.strip { display: flex; align-items: flex-end; gap: 5px; height: 52px; }
+.tick { flex: 1; background: var(--rule); border-radius: 2px; }
+.tick.on { background: var(--accent); }
+.cols { display: grid; gap: 20px; }
+h4 { font-size: 17px; margin-bottom: 8px; }
+.list { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; }
+.gate { background: var(--paper); border-radius: 10px; padding: 16px; display: grid; gap: 10px; }
+.lead-form, .lead { display: flex; gap: 8px; flex-wrap: wrap; }
+.lead input { flex: 1 1 200px; width: auto; }
+.lead-done { color: var(--ink); font-weight: 600; }
+.link { font-size: 14px; color: var(--muted); }
+.caveat { font-size: 12px; color: var(--muted); }
+
+.section { max-width: 1120px; margin: 0 auto; padding: 48px var(--gutter); border-top: 1px solid var(--rule); }
+.section h2 { font-size: clamp(26px, 4vw, 36px); margin-bottom: 24px; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.steps h3 { font-size: 20px; margin: 6px 0; }
+.steps p { color: var(--muted); }
+.step-n { font: 600 14px var(--ui); color: var(--accent); }
+.plans { display: grid; gap: 14px; margin-bottom: 16px; }
+.plan { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; }
+.plan h3 { font-size: 20px; }
+.price { font: 600 24px var(--display); }
+.plan ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+.soon { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.foot { max-width: 1120px; margin: 0 auto; padding: 32px var(--gutter) 48px; color: var(--muted); font-size: 14px; }
+
+@media (hover: hover) { button:hover:not(:disabled) { opacity: 0.9; } }
+@media (min-width: 760px) {
+  :root { --gutter: 32px; }
+  .hero { grid-template-columns: 1.1fr 0.9fr; gap: 56px; padding-top: 48px; align-items: start; }
+  .cols { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .plans { grid-template-columns: repeat(4, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse path { animation: none; stroke-dashoffset: 0; }
+  .result { animation: none; }
+  button { transition: none; }
+}
