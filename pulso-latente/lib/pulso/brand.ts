@@ -1,0 +1,55 @@
+const SECOND_LEVEL = new Set(["co", "com", "org", "net", "gov", "ac"]);
+
+/** Minúsculas y sin acentos, para comparar texto de forma estable. */
+export function fold(text: string): string {
+  return text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+export function normalizeDomain(input: string): string | null {
+  const raw = input.trim();
+  if (!raw) return null;
+  if (/^(javascript|data|file|ftp|mailto|vbscript):/i.test(raw)) return null;
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(raw) ? raw : `https://${raw}`;
+  let url: URL;
+  try {
+    url = new URL(withScheme);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+  if (!host.includes(".")) return null;
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(host) || host.includes(":")) return null;
+  if (/\.(local|internal|localhost|lan)$/.test(host)) return null;
+  if (!/^[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(host)) return null;
+  return host;
+}
+
+export function brandAliasesFromDomain(domain: string): string[] {
+  const parts = domain.split(".");
+  const secondLast = parts[parts.length - 2] ?? "";
+  const label =
+    parts.length >= 3 && SECOND_LEVEL.has(secondLast) ? (parts[parts.length - 3] ?? "") : secondLast;
+  const aliases = [label, label.replace(/-/g, " ")].filter((a) => a.length >= 3);
+  return [...new Set(aliases)];
+}
+
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function containsWord(haystack: string, needle: string): boolean {
+  const re = new RegExp(`(?<![a-z0-9])${escapeRegExp(needle)}(?![a-z0-9])`);
+  return re.test(haystack);
+}
+
+/** Índices (0 = primera) de los bloques no vacíos del texto donde aparece la marca o su dominio. */
+export function findMentions(text: string, aliases: readonly string[], domain: string): number[] {
+  const blocks = text.split(/\n+/).map(fold).filter((b) => b.trim().length > 0);
+  const needles = [...aliases.map(fold), fold(domain)];
+  const hits: number[] = [];
+  blocks.forEach((block, index) => {
+    if (needles.some((n) => n.length > 0 && containsWord(block, n))) hits.push(index);
+  });
+  return hits;
+}
