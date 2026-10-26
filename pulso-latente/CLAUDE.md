@@ -15,6 +15,7 @@ Escáner gratuito que mide si ChatGPT, Gemini y Perplexity recomiendan una marca
 
 - Dominio puro en `lib/pulso/` (sin red ni Next). Los motores son adaptadores intercambiables detrás de `Engine`.
 - TDD: test primero, ver fallar, implementar. Código inmutable, archivos < 400 líneas, sin `console.log`.
+- Marca y diseño: ver `docs/marca.md` y `/marca`. Un solo acento (cobalto), Geist, sin serif, tono de tienda sin siglas.
 - Todo texto de marca vive en `lib/copy.ts`. Nombres canónicos: Latente, Pulso Latente, Acto Voltaje.
 - Solo APIs oficiales de los motores; nunca automatizar apps de consumo.
 - TypeScript fijado en 5.x (Next 15 no soporta TS 7). No subir sin subir Next.

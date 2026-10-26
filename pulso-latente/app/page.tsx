@@ -1,3 +1,4 @@
+import { Lockup } from "@/components/Logo";
 import { Pricing } from "@/components/Pricing";
 import { Scanner } from "@/components/Scanner";
 import { copy } from "@/lib/copy";
@@ -6,7 +7,7 @@ export default function Page() {
   return (
     <>
       <header className="top">
-        <span className="logo">{copy.brand}</span>
+        <a className="logo" href="/" aria-label="Latente, inicio"><Lockup height={30} title="" /></a>
         <a href="#planes">Planes</a>
       </header>
       <main>
@@ -16,7 +17,7 @@ export default function Page() {
             <h1>{copy.hero.title}</h1>
             <p className="lead">{copy.hero.lead}</p>
             <svg className="pulse" viewBox="0 0 240 40" aria-hidden="true">
-              <path d="M0 22 H70 L80 22 L90 6 L102 36 L112 14 L120 22 H240" />
+              <path d="M0 20 H92 L100 4 L112 36 L118 20 H240" />
             </svg>
           </div>
           <Scanner />

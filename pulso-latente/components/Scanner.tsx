@@ -63,7 +63,7 @@ export function Scanner() {
       </form>
       {busy && (
         <div className="loading" role="status">
-          <svg viewBox="0 0 72 24" aria-hidden="true"><path d="M0 13 H24 L28 13 L32 4 L38 22 L43 8 L46 13 H72" /></svg>
+          <svg viewBox="0 0 72 24" aria-hidden="true"><path d="M0 12 H27 L31 3 L38 21 L42 12 H72" /></svg>
           <p className="muted">{copy.form.loading}</p>
         </div>
       )}

@@ -25,7 +25,11 @@ export async function GET(req: Request): Promise<Response> {
 <text y="32" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="600" font-size="96" fill="#101418">${score}</text>
 </g>
 <g font-family="system-ui, sans-serif" fill="#101418">
-<text x="470" y="250" font-size="26" fill="#5a6470" letter-spacing="4">PULSO LATENTE</text>
+<g transform="translate(470 168) scale(.6)" fill="none" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
+<path d="M12 88 L12 50 A38 38 0 0 1 50 12 A38 38 0 0 1 88 50 A38 38 0 0 1 50 88 Z" stroke="#101418"/>
+<path d="M26 52 L38 52 L44 35 L54 69 L60 52 L74 52" stroke="#2a3fd1"/>
+</g>
+<text x="545" y="212" font-size="26" fill="#5a6470" letter-spacing="4">PULSO LATENTE</text>
 <text x="470" y="330" font-size="56" font-weight="600">${esc(brand)}</text>
 <text x="470" y="395" font-size="32" fill="#5a6470">${esc(bandFor(score))} en buscadores de IA</text>
 <text x="470" y="520" font-size="26" fill="#5a6470">Mide el tuyo gratis. Latente, de Acto Voltaje.</text>

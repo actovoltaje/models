@@ -4,7 +4,7 @@ export const copy = {
   index: "Pulso Latente",
   maker: "Acto Voltaje",
   hero: {
-    eyebrow: "Visibilidad en buscadores de IA",
+    eyebrow: "El boca a boca de la IA",
     title: "¿ChatGPT te recomienda a ti o a tu competencia?",
     lead: "En dos minutos sabrás si la IA te recomienda, quién sale en tu lugar y qué hacer para cambiarlo.",
   },
