@@ -20,6 +20,11 @@ y el navegador normal en local. Versiones fijadas a propósito: subirlas a mano.
 - **frontend-design**: interfaces con dirección estética, sin look genérico de IA.
 - **claude-code-setup**: analiza un repo y recomienda hooks, skills, MCP y subagentes.
 
+- **agent-skills** (Addy Osmani, `addy-agent-skills`): ciclo spec → plan → build → test → review → ship como comandos (`/spec`, `/plan`, `/build`, `/test`, `/ship`…). `/review` choca con el de gstack: usar `/agent-skills:review`.
+- **oh-my-claudecode** (Yeachan Heo, `omc`): orquestación multiagente (`/autopilot`, `/ralph`, `/team`, `/ralplan`…). Tras instalar, ejecutar `/omc-setup` una vez. Aporta hooks propios y un MCP (`t`).
+
+Ambos se cargan desde el marketplace de GitHub (`extraKnownMarketplaces`). Para apuntar a un fork propio, cambiar el `repo` del marketplace correspondiente.
+
 ## Copiado en el repo (`.claude/`)
 
 Los plugins de terceros no se instalan solos en las sesiones en la nube, así que su contenido

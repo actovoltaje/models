@@ -7,11 +7,25 @@
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
       }
+    },
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    },
+    "omc": {
+      "source": {
+        "source": "github",
+        "repo": "Yeachan-Heo/oh-my-claudecode"
+      }
     }
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": true
+    "claude-code-setup@claude-plugins-official": true,
+    "agent-skills@addy-agent-skills": true,
+    "oh-my-claudecode@omc": true
   },
   "hooks": {
     "SessionStart": [
